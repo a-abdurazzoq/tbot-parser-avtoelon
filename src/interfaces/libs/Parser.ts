@@ -1,5 +1,5 @@
 export interface IParserAutoElon {
-    getDescriptionAutomobileText(url: string): string
+    getDescriptionAutomobileObject(url: string): Promise<IPostAutomobile>
 }
 
 export interface IPostAutomobile {
@@ -10,8 +10,12 @@ export interface IPostAutomobile {
     condition: string;
     color: string;
     engineSize: string;
+    driverUnit: string;
+    transmission: string;
+    body: string;
     fuelType: string;
     price: string;
     phoneNumber: string;
     address: string;
+    images: string[];
 }

@@ -15,7 +15,7 @@ export interface IPostAutomobile {
     body: string;
     fuelType: string;
     price: string;
-    phoneNumber: string;
+    phoneNumber: string[];
     address: string;
     images: string[];
 }

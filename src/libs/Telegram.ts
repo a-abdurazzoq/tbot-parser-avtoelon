@@ -1,14 +1,14 @@
 import {IRequestDataTelegram, ITelegram} from "../interfaces/libs/Telegram";
 import {IPostAutomobile} from "../interfaces/libs/Parser";
 import {ITelegramClient} from "../interfaces/clients/Telegram";
-import {IKeySpecificationAutomobile} from "../interfaces/Constants";
 
 export default class Telegram implements ITelegram {
     private text: string = ""
 
     constructor(
         private telegramClient: ITelegramClient,
-        private keySpecificationAutomobile: any
+        private keySpecificationAutomobile: any,
+        private isArray: Function
     ) {
     }
 
@@ -34,7 +34,11 @@ export default class Telegram implements ITelegram {
         for (const key in this.keySpecificationAutomobile) {
             let value = this.keySpecificationAutomobile[key]
             if (dataAutomobile[value]) {
-                text += `${key}: ${dataAutomobile[value]}\n`
+                if(this.isArray(dataAutomobile[value]))              
+                    text += dataAutomobile[value].map((data: string) => `${key}: ${data.trim()}\n`).join("")
+
+                else 
+                    text += `${key}: ${dataAutomobile[value]}\n`
             }
         }
 

@@ -6,6 +6,7 @@ import TelegramClient from "./clients/Telegram";
 import {keySpecificationAutomobile, TelegramBot} from "./constants/telegram-data";
 import getUrlsFromTxt from "./helper/GetUrlFromTxt";
 import {IPostAutomobile} from "./interfaces/libs/Parser";
+import IsArray from "./helper/IsArray";
 
 
 (async () => {
@@ -14,7 +15,7 @@ import {IPostAutomobile} from "./interfaces/libs/Parser";
     let autoElonRepo = new AutoElonRepo()
     let telegramClient = new TelegramClient(TelegramBot)
     let parser = new Parser(autoElonRepo, PathToDataPostAutoElon, KeyToDataPostAutoElon);
-    let telegram = new Telegram(telegramClient, keySpecificationAutomobile)
+    let telegram = new Telegram(telegramClient, keySpecificationAutomobile, IsArray)
 
     let length = (new Array(urls.length)).fill(1).map((a,i)=>i)
 

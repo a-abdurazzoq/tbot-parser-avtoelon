@@ -49,7 +49,7 @@ export default class Parser implements IParserAutoElon {
             price: this.getPriceFromHtml(html),
             name: this.getNameFromHtml(html),
             images: this.getImagesURL(html),
-            phoneNumber: ""
+            phoneNumber: ["+998"]
         }
 
         return dataAboutAutomobile
@@ -146,11 +146,13 @@ export default class Parser implements IParserAutoElon {
         return imageURL ? [imageURL] : []
     }
 
-    private async getPhoneNumberHolderAutomobile(url: string): Promise<string> {
+    private async getPhoneNumberHolderAutomobile(url: string): Promise<string[]> {
         let id = url.split("/").at(-1)
 
-        if (typeof id !== "string") return ""
+        if (typeof id !== "string") return ["+998"]
 
-        return this.autoElonRepo.getPhoneNumberHolderAutomobile(id)
+        let phoneNumbers = await this.autoElonRepo.getPhoneNumberHolderAutomobile(id)
+
+        return phoneNumbers.split(",")
     }
 }

@@ -129,7 +129,10 @@ export default class Parser implements IParserAutoElon {
     private getImagesURL(html: HTMLElement): string[] {
         let imagesHTMLElement = html.querySelectorAll(this.pathToDataPostAutoElon.images)
         let imagesURL = imagesHTMLElement.map(elem => elem.getAttribute("href") || "").filter(url => !!url)
-
+        
+        if(!imagesURL.length)
+            imagesURL = this.getImageURL(html)
+        
         return imagesURL
     }
 

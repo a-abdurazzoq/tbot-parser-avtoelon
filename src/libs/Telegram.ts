@@ -14,9 +14,9 @@ export default class Telegram implements ITelegram {
 
     public async sendDataAboutAutomobile(dataAutomobile: IPostAutomobile): Promise<void> {
         this.setTextAboutAutomobile(dataAutomobile)
-
+        
         const requestsData = this.getGroupedByImagesForRequestData(dataAutomobile)
-
+        
         for await (let requestData of requestsData) {
             await this.telegramClient.sendDocumentsWithCaption(requestData)
         }
@@ -45,15 +45,17 @@ export default class Telegram implements ITelegram {
         const requestData: IRequestDataTelegram[] = [{
             media: []
         }];
-
+        
         for (let i = 0; i < dataAutomobile.images.length; i++) {
-            requestData[requestData.length - 1].media.push({
+            let index = requestData.length ? requestData.length - 1 : 0
+
+            requestData[index].media.push({
                 type: "document",
                 media: dataAutomobile.images[i],
                 caption: i === dataAutomobile.images.length - 1 ? this.text : ""
             })
 
-            if (!(i % 10) && i)
+            if (!(i % 9) && i)
                 requestData.push({
                     media: []
                 })

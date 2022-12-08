@@ -38,7 +38,7 @@ export default class Telegram implements ITelegram {
             }
         }
 
-        return text
+        return `${text}\n❗️`
     }
 
     private getGroupedByImagesForRequestData(dataAutomobile: IPostAutomobile): IRequestDataTelegram[] {

@@ -1,8 +1,8 @@
 import {IKeySpecificationAutomobile, ITelegramBot} from "../interfaces/Constants";
 
 export const TelegramBot: ITelegramBot = {
-    chat_id: 1277784127,
-    token: "1434288246:AAEkICQsJyCY9dSaRzWVRMYISVroGJeDw38"
+    chat_id: 476226204,
+    token: "5920304801:AAHd-E6fXbO-MESpPUU6UrN_LkKDITEdwWQ"
 }
 
 export const keySpecificationAutomobile: IKeySpecificationAutomobile = {

@@ -16,15 +16,23 @@ import {IPostAutomobile} from "./interfaces/libs/Parser";
     let parser = new Parser(autoElonRepo, PathToDataPostAutoElon, KeyToDataPostAutoElon);
     let telegram = new Telegram(telegramClient, keySpecificationAutomobile)
 
-    for (let i = 0; i < urls.length; i++) {
+    let length = (new Array(urls.length)).fill(1).map((a,i)=>i)
+
+    for await (let i of length) {
         try {
+            
+            console.log(i + 1, "START")
+
             let data: IPostAutomobile = await parser.getDescriptionAutomobileObject(urls[i]);
 
+            console.log(i+1, data.name, data.position, data.price, "-", "RECEIVED")
+            
             await telegram.sendDataAboutAutomobile(data)
 
-            console.log(i + 1, data.name, data.position, data.price)
+            console.log(i+1, data.name, data.position, data.price, "-", "END")
+            
         } catch (e) {
-            console.log(i, e)
+            console.log(i + 1, e)
         }
 
 

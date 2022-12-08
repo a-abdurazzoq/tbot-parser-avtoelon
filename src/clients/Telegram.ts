@@ -21,6 +21,14 @@ export default class TelegramClient implements ITelegramClient {
             })
         };
 
-        return fetch(`https://api.telegram.org/bot${this.telegramBotData.token}/sendMediaGroup`, requestOptions)
+        return fetch(`https://api.telegram.org/bot${this.telegramBotData.token}/sendMediaGroup`, requestOptions).then(async (response) => {
+            if(response.status >= 400) {
+                let data = await response.json()
+                console.log("TB - FAILED", data);
+                
+            }
+
+            return 
+        })
     }
 }

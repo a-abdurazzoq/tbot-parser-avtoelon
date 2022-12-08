@@ -5,6 +5,7 @@ export const PathToDataPostAutoElon: IPathToPostAutoElon = {
     position: "header div.a-title div.a-title__container h1",
     price: ".a-price__text",
     images: ".photos-block > .photo-list a",
+    image: ".main-photo a"
 }
 
 export const KeyToDataPostAutoElon: IKeyToPostAutoElon = {

@@ -15,6 +15,7 @@ export interface IPathToPostAutoElon {
     price: string;
     position: string;
     images: string;
+    image: string;
 }
 
 export interface ITelegramBot {

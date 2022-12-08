@@ -133,6 +133,16 @@ export default class Parser implements IParserAutoElon {
         return imagesURL
     }
 
+    private getImageURL(html: HTMLElement) {
+        let imageURL = ""
+        let imageHTMLElement = html.querySelector(this.pathToDataPostAutoElon.image)
+        
+        if(imageHTMLElement)
+            imageURL = imageHTMLElement.getAttribute("href") || ""
+
+        return imageURL ? [imageURL] : []
+    }
+
     private async getPhoneNumberHolderAutomobile(url: string): Promise<string> {
         let id = url.split("/").at(-1)
 

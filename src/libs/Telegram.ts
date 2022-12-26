@@ -29,7 +29,7 @@ export default class Telegram implements ITelegram {
     }
 
     private formulateTheText(dataAutomobile: any) {
-        let text = `${dataAutomobile.name}\n\nMoshinangizni sotishga yordam beramiz bizga murojat qiling\n\nEgasi bilib qoysin\nYaxshi narx bolsa + belgisini\nQimat narx bolsa - belgisini\nkamentga yozib qoldiring\n\n`
+        let text = `${dataAutomobile.name}\n\nMoshinangizni sotishga yordam beramiz bizga murojat qiling\n\nEgasi bilib qoysin\nYaxshi narx bolsa + belgisini\nQimat narx bolsa - belgisini\nkamentga yozib qoldiring\n\n${dataAutomobile.hashTags}\n`
 
         for (const key in this.keySpecificationAutomobile) {
             let value = this.keySpecificationAutomobile[key]
@@ -42,7 +42,7 @@ export default class Telegram implements ITelegram {
             }
         }
 
-        return `${text}\n❗️`
+        return `${text}${dataAutomobile.description}\n\n❗\n\n`
     }
 
     private getGroupedByImagesForRequestData(dataAutomobile: IPostAutomobile): IRequestDataTelegram[] {

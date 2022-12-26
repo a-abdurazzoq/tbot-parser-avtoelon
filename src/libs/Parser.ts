@@ -51,10 +51,32 @@ export default class Parser implements IParserAutoElon {
             price: this.getPriceFromHtml(html),
             name: this.getNameFromHtml(html),
             images: this.getImagesURL(html),
+            hashTags: this.getHashTags(html).join(" "),
             phoneNumber: ["+998"]
         }
 
         return dataAboutAutomobile
+    }
+
+    private getHashTags(html: HTMLElement): string[] {
+        let hashTags = ["#avtobrokeruz"]
+        hashTags.push(this.getHashTagNameAutomobile(html))
+
+        return hashTags
+    }
+
+    private getHashTagNameAutomobile(html: HTMLElement): string {
+        let name = this.getNameFromHtml(html)
+
+        if(!this.isChevrolet(name))
+            return ""
+
+        let hashTagWithUnderLine = "#"+name.replace(this.regexpChevrolet, " ").trim().replace(" ", "_").toLowerCase()
+        let hasTagWithoutUnderLine = hashTagWithUnderLine.replace("_", "").toLowerCase()
+
+        let hashTags = hashTagWithUnderLine === hasTagWithoutUnderLine ? hashTagWithUnderLine : `${hashTagWithUnderLine} ${hasTagWithoutUnderLine}`
+
+        return hashTags
     }
 
     private getSpecificationAutomobile(html: HTMLElement) {
@@ -156,5 +178,9 @@ export default class Parser implements IParserAutoElon {
         let phoneNumbers = await this.autoElonRepo.getPhoneNumberHolderAutomobile(id)
 
         return phoneNumbers.split(",")
+    }
+
+    private isChevrolet(string: string) {
+        return this.regexpChevrolet.test(string)
     }
 }

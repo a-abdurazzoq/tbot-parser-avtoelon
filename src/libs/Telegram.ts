@@ -54,7 +54,7 @@ export default class Telegram implements ITelegram {
             let index = requestData.length ? requestData.length - 1 : 0
 
             requestData[index].media.push({
-                type: "document",
+                type: "photo",
                 media: dataAutomobile.images[i],
                 caption: i === dataAutomobile.images.length - 1 ? this.text : ""
             })

@@ -50,6 +50,7 @@ export default class Parser implements IParserAutoElon {
             position: this.getPositionFromHtml(html),
             price: this.getPriceFromHtml(html),
             name: this.getNameFromHtml(html),
+            description: this.getDescriptionFromHtml(html),
             images: this.getImagesURL(html),
             hashTags: this.getHashTags(html).join(" "),
             phoneNumber: ["+998"]
@@ -114,6 +115,11 @@ export default class Parser implements IParserAutoElon {
         let name = this.getDataFromHtml(this.pathToDataPostAutoElon.name, html)
 
         return parseName(name)
+    }
+    private getDescriptionFromHtml(html: HTMLElement): string {
+        let description = this.getDataFromHtml(this.pathToDataPostAutoElon.description, html)
+
+        return description
     }
 
     private getPositionFromHtml(html: HTMLElement): string {

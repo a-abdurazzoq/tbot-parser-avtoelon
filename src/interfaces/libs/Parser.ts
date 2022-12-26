@@ -17,5 +17,6 @@ export interface IPostAutomobile {
     price: string;
     phoneNumber: string[];
     address: string;
+    hashTags: string;
     images: string[];
 }

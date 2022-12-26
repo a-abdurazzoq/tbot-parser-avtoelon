@@ -4,6 +4,7 @@ export interface IParserAutoElon {
 
 export interface IPostAutomobile {
     name: string;
+    description: string;
     year: string;
     position: string;
     mileage: string;

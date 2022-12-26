@@ -12,6 +12,7 @@ export interface IKeyToPostAutoElon {
 
 export interface IPathToPostAutoElon {
     name: string;
+    description: string;
     price: string;
     position: string;
     images: string;

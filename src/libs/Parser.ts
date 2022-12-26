@@ -6,6 +6,8 @@ import {IKeyToPostAutoElon, IPathToPostAutoElon} from "../interfaces/Constants";
 import {PathToSpecificationAutomobile} from "../constants/html-paths";
 
 export default class Parser implements IParserAutoElon {
+    private regexpChevrolet: RegExp = /chevrolet/ig
+
     constructor(
         private autoElonRepo: IAutoElonRepo,
         private pathToDataPostAutoElon: IPathToPostAutoElon,

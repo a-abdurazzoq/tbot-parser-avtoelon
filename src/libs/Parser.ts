@@ -36,7 +36,7 @@ export default class Parser implements IParserAutoElon {
     public getDataAutomobileFromHtml(html: HTMLElement): IPostAutomobile {
         let specificationAutomobile = this.getSpecificationAutomobile(html)
 
-        let dataAboutAutomobile: IPostAutomobile = {
+        return {
             transmission: specificationAutomobile[this.keyToPostAutoElon.transmission],
             mileage: specificationAutomobile[this.keyToPostAutoElon.mileage],
             address: specificationAutomobile[this.keyToPostAutoElon.address],
@@ -46,7 +46,7 @@ export default class Parser implements IParserAutoElon {
             driverUnit: this.getDriverUnit(specificationAutomobile[this.keyToPostAutoElon.driverUnit]),
             engineSize: this.getEngineSize(specificationAutomobile[this.keyToPostAutoElon.engineSize]),
             fuelType: this.getFuelType(specificationAutomobile[this.keyToPostAutoElon.fuelType]),
-            condition: this.getConditionFromHtml(html),
+            condition: this.getConditionFromHtml(),
             position: this.getPositionFromHtml(html),
             price: this.getPriceFromHtml(html),
             name: this.getNameFromHtml(html),
@@ -55,8 +55,6 @@ export default class Parser implements IParserAutoElon {
             hashTags: this.getHashTags(html).join(" "),
             phoneNumber: ["+998"]
         }
-
-        return dataAboutAutomobile
     }
 
     private getHashTags(html: HTMLElement): string[] {
@@ -69,15 +67,48 @@ export default class Parser implements IParserAutoElon {
     private getHashTagNameAutomobile(html: HTMLElement): string {
         let name = this.getNameFromHtml(html)
 
-        if(!this.isChevrolet(name))
+        if (!this.isChevrolet(name))
             return ""
 
-        let hashTagWithUnderLine = "#"+name.replace(this.regexpChevrolet, " ").trim().replace(" ", "_").toLowerCase()
+        let hashTags = [
+            this.getNameOfAutomobileChevroletOnlyWithoutTextChevrolet(name),
+            this.getOtherTagsWithNameAutomobile(name),
+            this.getNameOfAutomobileChevrolet(name)
+        ]
+
+        return hashTags.join(" ")
+    }
+
+    private getNameOfAutomobileChevrolet(str: string) {
+        let hashTagWithUnderLine = "#" + str.replace(/\d/g, "").trim().replace(/\s/g, "_").toLowerCase()
+        let hasTagWithoutUnderLine = hashTagWithUnderLine.replace("_", "")
+
+        return [...new Set([hashTagWithUnderLine, hasTagWithoutUnderLine])].join(" ")
+    }
+
+    private getNameOfAutomobileChevroletOnlyWithoutTextChevrolet(str: string) {
+        let hashTagWithUnderLine = "#" + str.replace(this.regexpChevrolet, " ").trim().replace(" ", "_").toLowerCase()
         let hasTagWithoutUnderLine = hashTagWithUnderLine.replace("_", "").toLowerCase()
+        let hasTagWithoutNumber = hashTagWithUnderLine.replace("_", "").replace(/\d/g, "").toLowerCase()
 
-        let hashTags = hashTagWithUnderLine === hasTagWithoutUnderLine ? hashTagWithUnderLine : `${hashTagWithUnderLine} ${hasTagWithoutUnderLine}`
+        return [...new Set([hasTagWithoutUnderLine, hashTagWithUnderLine, hasTagWithoutNumber])].join(" ")
+    }
 
-        return hashTags
+    private getOtherTagsWithNameAutomobile(name: string): string {
+        let hashTagWithUnderLine = "#" + name
+            .replace(this.regexpChevrolet, " ")
+            .replace(/\d/g, "")
+            .trim()
+            .replace(" ", "_")
+            .toLowerCase()
+
+        let hasTagWithClub = `${hashTagWithUnderLine}_club`
+        let hasTagWithClubWithoutUnderline = `${hashTagWithUnderLine}club`
+
+        let hasTagWithPriceOf = `${hashTagWithUnderLine}_narxi`
+
+
+        return [hasTagWithPriceOf, hasTagWithClubWithoutUnderline, hasTagWithClub].join(" ");
     }
 
     private getSpecificationAutomobile(html: HTMLElement) {
@@ -116,10 +147,9 @@ export default class Parser implements IParserAutoElon {
 
         return parseName(name)
     }
-    private getDescriptionFromHtml(html: HTMLElement): string {
-        let description = this.getDataFromHtml(this.pathToDataPostAutoElon.description, html)
 
-        return description
+    private getDescriptionFromHtml(html: HTMLElement): string {
+        return this.getDataFromHtml(this.pathToDataPostAutoElon.description, html)
     }
 
     private getPositionFromHtml(html: HTMLElement): string {
@@ -128,25 +158,25 @@ export default class Parser implements IParserAutoElon {
         return parsePosition(position)
     }
 
-    private getEngineSize(engineSize: string) {
+    private getEngineSize(engineSize?: string): string {
         if (typeof engineSize !== "string") return ""
 
         return engineSize.replace(/[^0-9.]+/, "")
     }
 
-    private getFuelType(fuelType: string) {
+    private getFuelType(fuelType?: string): string {
         if (typeof fuelType !== "string") return ""
 
-        return fuelType.replace(/[0-9.\(\)]+/g, "")
+        return fuelType.replace(/[0-9.\\]+/g, "")
     }
 
-    private getDriverUnit(driverUnit: string) {
+    private getDriverUnit(driverUnit?: string): string {
         if (typeof driverUnit !== "string") return ""
 
         return driverUnit.replace(/To&#039;liq/g, "Orqa va oldi")
     }
 
-    private getConditionFromHtml(html: HTMLElement): string {
+    private getConditionFromHtml(): string {
         return "Yaxshi"
     }
 
@@ -159,18 +189,18 @@ export default class Parser implements IParserAutoElon {
     private getImagesURL(html: HTMLElement): string[] {
         let imagesHTMLElement = html.querySelectorAll(this.pathToDataPostAutoElon.images)
         let imagesURL = imagesHTMLElement.map(elem => elem.getAttribute("href") || "").filter(url => !!url)
-        
-        if(!imagesURL.length)
+
+        if (!imagesURL.length)
             imagesURL = this.getImageURL(html)
-        
+
         return imagesURL
     }
 
     private getImageURL(html: HTMLElement) {
         let imageURL = ""
         let imageHTMLElement = html.querySelector(this.pathToDataPostAutoElon.image)
-        
-        if(imageHTMLElement)
+
+        if (imageHTMLElement)
             imageURL = imageHTMLElement.getAttribute("href") || ""
 
         return imageURL ? [imageURL] : []
@@ -189,4 +219,5 @@ export default class Parser implements IParserAutoElon {
     private isChevrolet(string: string) {
         return this.regexpChevrolet.test(string)
     }
+
 }

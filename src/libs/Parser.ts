@@ -60,9 +60,9 @@ export default class Parser implements IParserAutoElon {
     }
 
     private getHashTags(html: HTMLElement): string[] {
-        let hashTags = ["#avtobrokeruz"]
+        let hashTags = []
         hashTags.push(this.getHashTagNameAutomobile(html))
-
+        hashTags.push("#avtobrokeruz")
         return hashTags
     }
 

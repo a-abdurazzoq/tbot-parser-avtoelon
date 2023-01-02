@@ -60,7 +60,7 @@ export default class Parser implements IParserAutoElon {
     private getHashTags(html: HTMLElement): string[] {
         let hashTags = []
         hashTags.push(this.getHashTagNameAutomobile(html))
-        hashTags.push("#avtobrokeruz")
+        hashTags.push("#avtobroker")
         return hashTags
     }
 
@@ -149,7 +149,7 @@ export default class Parser implements IParserAutoElon {
     }
 
     private getDescriptionFromHtml(html: HTMLElement): string {
-        return this.getDataFromHtml(this.pathToDataPostAutoElon.description, html)
+        return this.getDataFromHtml(this.pathToDataPostAutoElon.description, html).replace(/&#039;/gi, "'")
     }
 
     private getPositionFromHtml(html: HTMLElement): string {

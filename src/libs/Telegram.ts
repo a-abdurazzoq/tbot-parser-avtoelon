@@ -14,9 +14,9 @@ export default class Telegram implements ITelegram {
 
     public async sendDataAboutAutomobile(dataAutomobile: IPostAutomobile): Promise<void> {
         this.setTextAboutAutomobile(dataAutomobile)
-        
+
         const requestsData = this.getGroupedByImagesForRequestData(dataAutomobile)
-        
+
         for await (let requestData of requestsData) {
             await this.telegramClient.sendDocumentsWithCaption(requestData)
         }
@@ -29,27 +29,28 @@ export default class Telegram implements ITelegram {
     }
 
     private formulateTheText(dataAutomobile: any) {
-        let text = `${dataAutomobile.name}\n\nMoshinangizni sotishga yordam beramiz bizga murojat qiling\n\nEgasi bilib qoysin\nYaxshi narx bolsa + belgisini\nQimat narx bolsa - belgisini\nkamentga yozib qoldiring\n\n${dataAutomobile.hashTags}\n`
-
+        let text = `${dataAutomobile.name}\n\nMashinangizni sotishga yordam beramiz bizga murojaat qiling\n\nEgasi bilib qoysin\nYaxshi narx bo‘lsa + belgisini\nQimmat narx bo‘lsa - belgisini\nkomentga yozib qoldiring\n\n‼️ Boshqa eʼlonlar 👉 @AvtoBrokeruz\n`
+        let description = dataAutomobile.description ? `${dataAutomobile.description}\n` : ""
         for (const key in this.keySpecificationAutomobile) {
             let value = this.keySpecificationAutomobile[key]
             if (dataAutomobile[value]) {
-                if(this.isArray(dataAutomobile[value]))              
+                if (this.isArray(dataAutomobile[value]))
                     text += dataAutomobile[value].map((data: string) => `${key}: ${data.trim()}\n`).join("")
 
-                else 
+                else
                     text += `${key}: ${dataAutomobile[value]}\n`
             }
         }
 
-        return `${text}${dataAutomobile.description}\n\n❗\n\n`
+
+        return `${text}${description}\n${dataAutomobile.hashTags}`
     }
 
     private getGroupedByImagesForRequestData(dataAutomobile: IPostAutomobile): IRequestDataTelegram[] {
         const requestData: IRequestDataTelegram[] = [{
             media: []
         }];
-        
+
         for (let i = 0; i < dataAutomobile.images.length; i++) {
             let index = requestData.length ? requestData.length - 1 : 0
 
